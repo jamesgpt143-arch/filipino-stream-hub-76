@@ -185,8 +185,10 @@ export const VideoPlayer = ({ channel, onClose }: VideoPlayerProps) => {
         
         setIsLoading(false);
         
-        // Auto-play
+        // Auto-play with sound
         if (videoRef.current) {
+          videoRef.current.muted = false;
+          videoRef.current.volume = 0.8;
           videoRef.current.play();
         }
 

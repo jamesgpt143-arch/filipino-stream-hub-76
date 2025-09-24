@@ -15,11 +15,11 @@ export const VideoModal = ({ isOpen, onClose, title, videoUrl }: VideoModalProps
       <DialogContent className="max-w-6xl w-full h-[80vh] p-0">
         <div className="w-full h-full">
           <iframe
-            src={videoUrl}
+            src={`${videoUrl}${videoUrl.includes('?') ? '&' : '?'}autoplay=1&mute=0`}
             title={title}
             className="w-full h-full border-0"
             allowFullScreen
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; microphone"
           />
         </div>
       </DialogContent>
