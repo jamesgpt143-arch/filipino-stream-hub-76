@@ -11,6 +11,7 @@ import TVSeries from "./pages/TVSeries";
 import Comments from "./pages/Comments";
 import NotFound from "./pages/NotFound";
 import { disableDevTools } from "./utils/disableDevTools";
+import { initializePopupBlocker, addCSPMeta } from "./utils/popupBlocker";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -19,6 +20,12 @@ const App = () => {
   useEffect(() => {
     // Initialize developer tools protection
     disableDevTools();
+    
+    // Initialize popup and ad blocker
+    initializePopupBlocker();
+    
+    // Add Content Security Policy
+    addCSPMeta();
   }, []);
 
   return (
