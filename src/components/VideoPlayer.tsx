@@ -185,11 +185,27 @@ export const VideoPlayer = ({ channel, onClose }: VideoPlayerProps) => {
         
         setIsLoading(false);
         
-        // Auto-play with sound
+        // Auto-play with sound - try multiple times to ensure it works
         if (videoRef.current) {
           videoRef.current.muted = false;
           videoRef.current.volume = 0.8;
-          videoRef.current.play();
+          
+          // Try to play immediately
+          const playPromise = videoRef.current.play();
+          if (playPromise !== undefined) {
+            playPromise.catch((error) => {
+              console.log('Autoplay failed, user interaction required:', error);
+            });
+          }
+          
+          // Also try after a short delay
+          setTimeout(() => {
+            if (videoRef.current) {
+              videoRef.current.muted = false;
+              videoRef.current.volume = 0.8;
+              videoRef.current.play().catch(() => {});
+            }
+          }, 100);
         }
 
       } catch (err) {
@@ -245,9 +261,9 @@ export const VideoPlayer = ({ channel, onClose }: VideoPlayerProps) => {
           {channel.type === 'youtube' && (currentEmbedUrl || channel.embedUrl) ? (
             <div className="relative w-full h-full">
               <iframe
-                src={`${currentEmbedUrl || channel.embedUrl}&autoplay=1&mute=0`}
+                src={`${currentEmbedUrl || channel.embedUrl}&autoplay=1&mute=0&controls=1`}
                 className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; microphone"
                 allowFullScreen
               />
               {channel.hasMultipleStreams && channel.youtubeChannelId && (
